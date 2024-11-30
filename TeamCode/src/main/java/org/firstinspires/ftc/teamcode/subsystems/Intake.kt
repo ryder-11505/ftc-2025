@@ -38,7 +38,7 @@ class Intake(hardwareMap: HardwareMap) : StateLoggable {
         var P_Intake: Double = 12.0
 
         @JvmField // Speed while intaking, if it is flying past lower this number
-        var speed = 0.6
+        var speed = 1.0
 
         @JvmField
         var transferSpeed = 1.0
@@ -182,9 +182,9 @@ class Intake(hardwareMap: HardwareMap) : StateLoggable {
                     } else {
                         motor.power = -speed / 4
                     }
-                } else { // Bad Sample
+                } else { // Bad Sample (Xavier|I changed this part to work with the intake backplate so if we remove that change the value)
                     captureTimeout = null
-                    motor.power = -1.0
+                    motor.power = 1.0
                     StaticLights.colors[1] = RevBlinkinLedDriver.BlinkinPattern.BLACK
                 }
 
