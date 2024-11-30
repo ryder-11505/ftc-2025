@@ -41,7 +41,7 @@ public class TeleOpFieldCentric extends LinearOpMode {
     public static double SlowmodeSpeed = 0.4;
     public static double SlowmodeTurning = 0.5;
     public static double TriggerMin = 0.01;
-    public static double climbUpSpeed = 0.5;
+    public static double climbUpSpeed = 1.0;
 
     @SuppressLint("DefaultLocale")
     @Override

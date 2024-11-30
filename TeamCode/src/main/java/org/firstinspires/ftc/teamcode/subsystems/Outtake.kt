@@ -379,7 +379,11 @@ class Outtake(hardwareMap: HardwareMap) : StateLoggable {
             Loggable(
                 "MOVE_SAFE", ParallelAction(
                     elbow.setPosition(2),
-                    wrist.setPosition(0)
+                    wrist.setPosition(0),
+                    grabber.setPosition(2)
+                    //Xavier|line above was added because specimen ready position
+                    //after retry from specimen depositing was letting go of the specimen
+
                 )
             ),
             lift.gotoDistance(0.0),

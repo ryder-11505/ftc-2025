@@ -35,7 +35,7 @@ import kotlin.math.max
 class Intake(hardwareMap: HardwareMap) : StateLoggable {
     companion object PARAMS {
         @JvmField // Forward intake power
-        var P_Intake: Double = 12.0
+        var P_Intake: Double = 15.0
 
         @JvmField // Speed while intaking, if it is flying past lower this number
         var speed = 1.0
@@ -214,7 +214,7 @@ class Intake(hardwareMap: HardwareMap) : StateLoggable {
                 slides.gotoDistance(0.0, 0.1),
                 SequentialAction(
                     InstantAction {
-                        motor.power = 0.15
+                        motor.power = 0.25
                     },
                     SleepAction(0.1),
                     InstantAction {
