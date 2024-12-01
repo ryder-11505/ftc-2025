@@ -38,7 +38,7 @@ import java.util.concurrent.TimeUnit;
 @TeleOp(group = "advanced", name = "Teleop")
 @Config
 public class TeleOpFieldCentric extends LinearOpMode {
-    public static double SlowmodeSpeed = 0.4;
+    public static double SlowmodeSpeed = 0.5;
     public static double SlowmodeTurning = 0.5;
     public static double TriggerMin = 0.01;
     public static double climbUpSpeed = 1.0;

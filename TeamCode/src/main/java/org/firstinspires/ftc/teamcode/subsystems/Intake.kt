@@ -44,7 +44,7 @@ class Intake(hardwareMap: HardwareMap) : StateLoggable {
         var transferSpeed = 1.0
 
         @JvmField
-        var captureTimeout = 2L
+        var captureTimeout = 250L
 
         @JvmField
         var currentTrigger = 2.0
@@ -182,9 +182,9 @@ class Intake(hardwareMap: HardwareMap) : StateLoggable {
                     } else {
                         motor.power = -speed / 4
                     }
-                } else { // Bad Sample (Xavier|I changed this part to work with the intake backplate so if we remove that change the value)
-                    captureTimeout = null
-                    motor.power = 1.0
+                } else {
+                    captureTimeout = null// Bad Sample
+                    motor.power = 1.0 //(Xavier|I changed this part to work with the intake backplate so if we remove that change the value)
                     StaticLights.colors[1] = RevBlinkinLedDriver.BlinkinPattern.BLACK
                 }
 
@@ -214,7 +214,7 @@ class Intake(hardwareMap: HardwareMap) : StateLoggable {
                 slides.gotoDistance(0.0, 0.1),
                 SequentialAction(
                     InstantAction {
-                        motor.power = 0.25
+                        motor.power = 1.0
                     },
                     SleepAction(0.1),
                     InstantAction {
