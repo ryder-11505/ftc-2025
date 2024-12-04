@@ -60,7 +60,7 @@ class Intake(hardwareMap: HardwareMap) : StateLoggable {
 
         class FlipLimits {
             @JvmField
-            var downPosition = 0.30
+            var downPosition = 0.26
 
             @JvmField
             var upPosition = 0.00
