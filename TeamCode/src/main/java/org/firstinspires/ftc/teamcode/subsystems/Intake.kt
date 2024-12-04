@@ -44,7 +44,7 @@ class Intake(hardwareMap: HardwareMap) : StateLoggable {
         var transferSpeed = 1.0
 
         @JvmField
-        var captureTimeout = 250L
+        var captureTimeout = 100L
 
         @JvmField
         var currentTrigger = 2.0
@@ -60,7 +60,7 @@ class Intake(hardwareMap: HardwareMap) : StateLoggable {
 
         class FlipLimits {
             @JvmField
-            var downPosition = 0.29
+            var downPosition = 0.30
 
             @JvmField
             var upPosition = 0.00
@@ -214,7 +214,7 @@ class Intake(hardwareMap: HardwareMap) : StateLoggable {
                 slides.gotoDistance(0.0, 0.1),
                 SequentialAction(
                     InstantAction {
-                        motor.power = 1.0
+                        motor.power = 0.15
                     },
                     SleepAction(0.1),
                     InstantAction {
