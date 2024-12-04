@@ -51,7 +51,7 @@ class Outtake(hardwareMap: HardwareMap) : StateLoggable {
 
         class ElbowLimits {
             @JvmField
-            var intake = 0.49
+            var intake = 0.45
 
             @JvmField
             var deposit = 1.0
