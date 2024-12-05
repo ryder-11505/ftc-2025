@@ -154,9 +154,9 @@ public class TeleOpFieldCentric extends LinearOpMode {
 
             driveBase.update(p);
 
-            if ((PoseStorage.splitControls ? gamepad2 : gamepad1).dpad_up) {
+            if ((PoseStorage.splitControls ? gamepad2 : gamepad1).dpad_down) {
                 climbMotor.setPower(climbUpSpeed);
-            } else if ((PoseStorage.splitControls ? gamepad2 : gamepad1).dpad_down) {
+            } else if ((PoseStorage.splitControls ? gamepad2 : gamepad1).dpad_up) {
                 climbMotor.setPower(-1.0);
             } else {
                 climbMotor. setZeroPowerBehavior(DcMotor.ZeroPowerBehavior. BRAKE);
