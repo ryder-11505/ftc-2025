@@ -259,7 +259,7 @@ public class TeleOpFieldCentric extends LinearOpMode {
                             outtake.homePosition(),
                             intake.retractSlides(),
                             intake.transfer(),
-                            new Loggable("WAIT_FOR_IT", new SleepAction(1)),
+                            new Loggable("WAIT_FOR_IT", new SleepAction(0.3)),
                             outtake.pickupInternalSample(),
                             intake.stopTransfer()
                     );

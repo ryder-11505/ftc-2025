@@ -196,7 +196,7 @@ public class HighSampleAuto extends LinearOpMode {
                         )
                 );
 
-        builder = addParts(builder, map.getParkParts());
+//        builder = addParts(builder, map.getParkParts());
 //
 //        builder = builder.strafeTo(map.getSampleCollectPosition().position)
 //                .stopAndAdd(
