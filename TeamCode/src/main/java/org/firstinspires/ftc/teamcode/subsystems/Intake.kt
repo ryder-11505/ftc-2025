@@ -60,7 +60,7 @@ class Intake(hardwareMap: HardwareMap) : StateLoggable {
 
         class FlipLimits {
             @JvmField
-            var downPosition = 0.28
+            var downPosition = 0.29
 
             @JvmField
             var upPosition = 0.00
@@ -135,7 +135,7 @@ class Intake(hardwareMap: HardwareMap) : StateLoggable {
         get() {
             val distance = distanceSensor.getDistance(DistanceUnit.MM)
             Logging.DEBUG("REAR_DISTANCE", distance)
-            return distance < 50
+            return distance < 60
         }
 
     fun resetSlides(): LoggableAction {
@@ -227,7 +227,7 @@ class Intake(hardwareMap: HardwareMap) : StateLoggable {
                     },
                     transfer(),
                     stopTransfer(),
-                    SleepAction(1.0),
+                    SleepAction(0.1),
                     pullServo.setSpeed(0.0),
                 )
             )

@@ -10,6 +10,7 @@ import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
+import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.hardware.lynx.LynxModule;
@@ -109,6 +110,7 @@ public class TeleOpFieldCentric extends LinearOpMode {
         Deadline matchTimer = new Deadline(2, TimeUnit.MINUTES);
         while (opModeIsActive() && !isStopRequested()) {
             p = new TelemetryPacket();
+
 
             if (gamepad2.back) {
                 PoseStorage.splitControls = true;
@@ -259,7 +261,7 @@ public class TeleOpFieldCentric extends LinearOpMode {
                             outtake.homePosition(),
                             intake.retractSlides(),
                             intake.transfer(),
-                            new Loggable("WAIT_FOR_IT", new SleepAction(0.3)),
+                            new Loggable("WAIT_FOR_IT", new SleepAction(1)),
                             outtake.pickupInternalSample(),
                             intake.stopTransfer()
                     );
