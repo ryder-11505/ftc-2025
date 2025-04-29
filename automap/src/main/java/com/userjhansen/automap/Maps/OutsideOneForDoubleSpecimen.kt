@@ -8,10 +8,10 @@ import com.userjhansen.automap.PartType
 class OutsideOneForDoubleSpecimen : Map {
     override val startPosition = Pose2d(15.0, -62.0, Math.PI / 2)
 
-    override val specimenPosition = Pose2d(2.0, -30.0, Math.PI / 2)
-    override val specimenPosition2 = Pose2d(1.0, -29.0, Math.PI / 2)
+    override val specimenPosition = Pose2d(0.0, -27.0, Math.PI / 2)
+    override val specimenPosition2 = Pose2d(-2.0, -27.0, Math.PI / 2)
     override val depositPosition = Pose2d(-46.0, -58.0, Math.PI / 16)
-    override val collectPosition = Pose2d(42.0, -60.0, Math.PI / 2)
+    override val collectPosition = Pose2d(42.0, -63.5, Math.PI / 2)
     override val parkPosition = Pose2d(42.0, -61.0, Math.PI / 2)
 
     override val highBasketPosition = Pose2d(-65.0, -47.0, Math.toRadians(315.0))

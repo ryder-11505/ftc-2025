@@ -35,7 +35,7 @@ class Outtake(hardwareMap: HardwareMap) : StateLoggable {
             var topBasket = 27.0
 
             @JvmField
-            var topSpecimen = 12.5
+            var topSpecimen = 13.5
         }
 
         class GrabberLimits {
@@ -229,6 +229,8 @@ class Outtake(hardwareMap: HardwareMap) : StateLoggable {
             }, grabber.setPosition(if (open) 0 else 1))),
         )
     }
+
+
 
     @JvmOverloads
     fun raiseSpecimen(loose: Boolean = true): LoggableAction {
