@@ -4,6 +4,9 @@ import com.acmerobotics.roadrunner.Pose2d
 import com.userjhansen.automap.AutoPart
 import com.userjhansen.automap.PartType
 
+
+
+
 class OutsideOne : Map {
     override val startPosition = Pose2d(15.0, -62.0, Math.PI / 2)
 

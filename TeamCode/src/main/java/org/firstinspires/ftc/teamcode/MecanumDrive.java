@@ -46,6 +46,7 @@ import org.firstinspires.ftc.teamcode.localization.FuseLocation;
 import org.firstinspires.ftc.teamcode.localization.OTOSLocalizer;
 import org.firstinspires.ftc.teamcode.localization.RollbackLocalizer;
 import org.firstinspires.ftc.teamcode.localization.ThreeDeadWheelLocalizer;
+import org.firstinspires.ftc.teamcode.localization.TwoDeadWheelLocalizer;
 import org.firstinspires.ftc.teamcode.messages.DriveCommandMessage;
 import org.firstinspires.ftc.teamcode.messages.MecanumCommandMessage;
 import org.firstinspires.ftc.teamcode.messages.PoseMessage;
@@ -112,7 +113,7 @@ public final class MecanumDrive implements StateLoggable {
     public final LazyImu lazyImu;
     public final RollbackLocalizer localizer;
     public final FuseLocation fusedLocation;
-    public final ThreeDeadWheelLocalizer deadWheelLocalizer;
+    public final TwoDeadWheelLocalizer deadWheelLocalizer;
     public final OTOSLocalizer otosLocalizer;
     private final DownsampledWriter targetPoseWriter = new DownsampledWriter("TARGET_POSE", 50_000_000);
     private final DownsampledWriter driveCommandWriter = new DownsampledWriter("DRIVE_COMMAND", 50_000_000);
@@ -148,7 +149,7 @@ public final class MecanumDrive implements StateLoggable {
 
         voltageSensor = hardwareMap.voltageSensor.iterator().next();
 
-        deadWheelLocalizer = new ThreeDeadWheelLocalizer(hardwareMap, PARAMS.inPerTick);
+        deadWheelLocalizer = new TwoDeadWheelLocalizer(hardwareMap, PARAMS.inPerTick);
         otosLocalizer = new OTOSLocalizer(hardwareMap);
         fusedLocation = new FuseLocation(otosLocalizer, deadWheelLocalizer);
         localizer = new RollbackLocalizer(fusedLocation);
@@ -194,7 +195,7 @@ public final class MecanumDrive implements StateLoggable {
         Drawing.drawRobot(c, fusedLocation.getOtosPose());
 
         c.setStroke("#3F89B5");
-        Drawing.drawRobot(c, fusedLocation.getThreeWheelPose());
+        Drawing.drawRobot(c, fusedLocation.getTwoWheelPose());
 
         p.put("x", localizer.currentPose.position.x);
         p.put("y", localizer.currentPose.position.y);

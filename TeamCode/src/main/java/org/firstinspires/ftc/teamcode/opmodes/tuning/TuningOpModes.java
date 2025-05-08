@@ -24,6 +24,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeRegistrar;
 import org.firstinspires.ftc.robotcore.internal.opmode.OpModeMeta;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.localization.ThreeDeadWheelLocalizer;
+import org.firstinspires.ftc.teamcode.localization.TwoDeadWheelLocalizer;
 import org.firstinspires.ftc.teamcode.staticData.Logging;
 
 import java.util.ArrayList;
@@ -60,9 +61,8 @@ public final class TuningOpModes {
                 List<Encoder> leftEncs = new ArrayList<>(), rightEncs = new ArrayList<>();
                 List<Encoder> parEncs = new ArrayList<>(), perpEncs = new ArrayList<>();
 
-                ThreeDeadWheelLocalizer dl = md.deadWheelLocalizer;
-                parEncs.add(dl.par0);
-                parEncs.add(dl.par1);
+                TwoDeadWheelLocalizer dl = md.deadWheelLocalizer;
+                parEncs.add(dl.par);
                 perpEncs.add(dl.perp);
 
                 return new DriveView(
