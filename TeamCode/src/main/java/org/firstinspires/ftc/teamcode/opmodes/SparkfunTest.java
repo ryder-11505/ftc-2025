@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.opmodes;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+//import com.qualcomm.robotcore.eventloop.opmode.Enabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.staticData.Logging;
 
 @TeleOp(name = "Sensor: SparkFun OTOS", group = "Sensor")
-@Disabled
+
 public class SparkfunTest extends LinearOpMode {
     // Create an instance of the sensor
     SparkFunOTOS myOtos;
@@ -61,6 +61,11 @@ public class SparkfunTest extends LinearOpMode {
 
             // Update the telemetry on the driver station
             Logging.update();
+
+            // Print position including heading on Driver Station
+            telemetry.addData("X coordinate", pos.x);
+            telemetry.addData("Y coordinate", pos.y);
+            telemetry.addData("Heading angle", pos.h);
         }
     }
 

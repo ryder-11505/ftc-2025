@@ -28,14 +28,14 @@ class Outtake(hardwareMap: HardwareMap) : StateLoggable {
         var P_Outake = 20.0
 
         @JvmField
-        var SpecimenCurrentTrigger = 6.0
+        var SpecimenCurrentTrigger = 7.5
 
         class LiftPositions {
             @JvmField
             var topBasket = 27.0
 
             @JvmField
-            var topSpecimen = 13.5
+            var topSpecimen = 15.0
         }
 
         class GrabberLimits {
@@ -46,7 +46,7 @@ class Outtake(hardwareMap: HardwareMap) : StateLoggable {
             var grabbing = 0.0
 
             @JvmField
-            var loose = 0.2
+            var loose = 0.0
         }
 
         class ElbowLimits {
@@ -61,6 +61,9 @@ class Outtake(hardwareMap: HardwareMap) : StateLoggable {
 
             @JvmField
             var specimenOtherSide = 0.235
+
+            @JvmField
+            var specimenOtherSideBack = 0.8
         }
 
         class WristLimits {
@@ -74,10 +77,16 @@ class Outtake(hardwareMap: HardwareMap) : StateLoggable {
             var deposit = 0.4
 
             @JvmField
-            var specimenOtherSide = 0.84
+            var specimenDeposit = 0.84
 
             @JvmField
-            var specimenSecure = 0.9
+            var specimenOtherSide = 0.5
+
+            @JvmField
+            var specimenSecure = 1.0
+
+            @JvmField
+            var specimenSecureBack = 0.7
         }
 
         val liftPositions = LiftPositions()
@@ -107,6 +116,7 @@ class Outtake(hardwareMap: HardwareMap) : StateLoggable {
             PARAMS.elbowLimits.deposit,
             PARAMS.elbowLimits.specimen,
             PARAMS.elbowLimits.specimenOtherSide,
+            PARAMS.elbowLimits.specimenOtherSideBack,
         ), 0.578
     )
     val wrist = ServoMultiState(
@@ -115,8 +125,10 @@ class Outtake(hardwareMap: HardwareMap) : StateLoggable {
             PARAMS.wristLimits.intake,
             PARAMS.wristLimits.specimen,
             PARAMS.wristLimits.deposit,
+            PARAMS.wristLimits.specimenDeposit,
             PARAMS.wristLimits.specimenOtherSide,
-            PARAMS.wristLimits.specimenSecure
+            PARAMS.wristLimits.specimenSecure,
+            PARAMS.wristLimits.specimenSecureBack
         ), 1.17
     )
 
@@ -240,7 +252,7 @@ class Outtake(hardwareMap: HardwareMap) : StateLoggable {
                 outtakeActionWriter.write(StringMessage("GRAB_SPECIMEN"))
             }),
             lift.goToThroughWhile(
-                liftPositions.topSpecimen,
+                liftPositions.topSpecimen - 2,
                 liftPositions.topSpecimen / 2,
                 LoggingSequential(
                     "MOVE_ARM_OUT",
@@ -273,10 +285,64 @@ class Outtake(hardwareMap: HardwareMap) : StateLoggable {
             Loggable(
                 "GRAB", ParallelAction(
                     grabber.setPosition(1),
-                    wrist.setPosition(4)
+                    wrist.setPosition(5)
                 )
             ),
             lift.gotoDistance(PARAMS.liftPositions.topSpecimen + 8, 0.25),
+            Loggable(
+                "POWER_OFF",
+                InstantAction {
+                    lift.liftMotor.mode = DcMotor.RunMode.RUN_TO_POSITION;
+                    lift.lockedOut = false
+                })
+        )
+    }
+
+    @JvmOverloads
+    fun raiseSpecimenBack(loose: Boolean = true): LoggableAction {
+        return LoggingSequential(
+            "GRAB_SPECIMEN",
+            Loggable("GRAB_SPECIMEN", InstantAction {
+                outtakeActionWriter.write(StringMessage("GRAB_SPECIMEN"))
+            }),
+            lift.goToThroughWhile(
+                liftPositions.topSpecimen + 2,
+                liftPositions.topSpecimen / 2,
+                LoggingSequential(
+                    "MOVE_ARM_OUT",
+
+                    Loggable(
+                        "MOVE_ARM_OUT",
+                        ParallelAction(elbow.setPosition(4), wrist.setPosition(4))
+                    ),
+                    Loggable(
+                        "GRAB_DROP", ParallelAction(
+                            grabber.setPosition(if (loose) 2 else 1),
+                            SleepAction(0.2),
+                        )
+                    ),
+                    Loggable("GRAB", grabber.setPosition(1)),
+                )
+            )
+        )
+    }
+
+    fun placeSpecimenBack(): LoggableAction {
+        return LoggingSequential(
+            "PLACE_SPECIMEN",
+            lift.gotoDistance(liftPositions.topSpecimen),
+            Loggable("LOG_ACTION", InstantAction {
+                outtakeActionWriter.write(StringMessage("PLACE_SPECIMEN"))
+                lift.lockedOut = true
+                lift.liftMotor.power = -1.0
+            }),
+            Loggable(
+                "GRAB", ParallelAction(
+                    grabber.setPosition(1),
+                    wrist.setPosition(6)
+                )
+            ),
+            lift.gotoDistance(PARAMS.liftPositions.topSpecimen - 10, 0.25),
             Loggable(
                 "POWER_OFF",
                 InstantAction {
@@ -301,6 +367,34 @@ class Outtake(hardwareMap: HardwareMap) : StateLoggable {
                 var complete = false
                 if (currentAction == null || !currentAction!!.run(p)) {
                     currentAction = placeSpecimen()
+                    complete = true
+                }
+
+                if (!currentTriggered) {
+                    currentTriggered = !currentTriggerAction.run(p)
+                }
+
+                return !currentTriggered || !complete
+            }
+
+        }
+    }
+
+    fun ensureSpecimenPlacedBack(): LoggableAction {
+        return object : LoggableAction {
+            override val name: String
+                get() = if (currentAction != null) currentAction!!.name else "SPECIMEN_PLACE"
+            var currentAction: LoggableAction? = null;
+            var currentTriggered = false
+            val currentTriggerAction = SequentialAction(
+                CurrentCutoff(lift.liftMotor).above(SpecimenCurrentTrigger),
+                CurrentCutoff(lift.liftMotor).below(SpecimenCurrentTrigger)
+            )
+
+            override fun run(p: TelemetryPacket): Boolean {
+                var complete = false
+                if (currentAction == null || !currentAction!!.run(p)) {
+                    currentAction = placeSpecimenBack()
                     complete = true
                 }
 

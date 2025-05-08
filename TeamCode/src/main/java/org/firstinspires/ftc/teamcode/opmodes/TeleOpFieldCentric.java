@@ -142,7 +142,7 @@ public class TeleOpFieldCentric extends LinearOpMode {
                     PoseStorage.isRedAlliance = false;
                 }
             } else {
-                slowMode.update(gamepad1.y);
+                slowMode.update(gamepad1.dpad_up);
                 fieldMode.update(gamepad1.x);
 
                 if (gamepad1.dpad_right) {
@@ -154,14 +154,14 @@ public class TeleOpFieldCentric extends LinearOpMode {
 
             driveBase.update(p);
 
-            if ((PoseStorage.splitControls ? gamepad2 : gamepad1).dpad_up) {
-                climbMotor.setPower(climbUpSpeed);
-            } else if ((PoseStorage.splitControls ? gamepad2 : gamepad1).dpad_down) {
-                climbMotor.setPower(-1.0);
-            } else {
-                climbMotor. setZeroPowerBehavior(DcMotor.ZeroPowerBehavior. BRAKE);
-                climbMotor.setPower(0);
-            }
+//            if ((PoseStorage.splitControls ? gamepad2 : gamepad1).dpad_up) {
+//                climbMotor.setPower(climbUpSpeed);
+//            } else if ((PoseStorage.splitControls ? gamepad2 : gamepad1).dpad_down) {
+//                climbMotor.setPower(-1.0);
+//            } else {
+//                climbMotor. setZeroPowerBehavior(DcMotor.ZeroPowerBehavior. BRAKE);
+//                climbMotor.setPower(0);
+//            }
 
             Pose2d poseEstimate = driveBase.localizer.currentPose;
             input = input.times(slowMode.val ? SlowmodeSpeed : 1);
@@ -338,6 +338,24 @@ public class TeleOpFieldCentric extends LinearOpMode {
                     case SpecimenIntake:
                         finishingAction = null;
                         sampleAction = outtake.ensureSpecimenPlaced();
+                }
+            }
+
+            if (progressSample.update((PoseStorage.splitControls ? gamepad2 : gamepad1).y)) {
+                switch (sampleState) {
+                    case SpecimenWait:
+                        if (specimenGrabbed) {
+                            finishingAction = outtake.raiseSpecimenBack();
+                            sampleState = SampleState.SpecimenIntake;
+                        } else {
+                            finishingAction = outtake.abortSpecimen();
+                            finishState = FinishingState.Outtake;
+                            sampleState = SampleState.Waiting;
+                        }
+                        break;
+                    case SpecimenIntake:
+                        finishingAction = null;
+                        sampleAction = outtake.ensureSpecimenPlacedBack();
                 }
             }
 

@@ -191,7 +191,7 @@ public class DoubleSpecimenAuto extends LinearOpMode {
                 .stopAndAdd(
                         new SequentialAction(
                                 outtake.specimenReady(true),
-                                outtake.getLift().gotoDistance(4.0),
+                                outtake.getLift().gotoDistance(3.0),
                                 new SleepAction(0.75),
                                 outtake.grabber(false),
                                 outtake.getLift().gotoDistance(10.0),
@@ -206,7 +206,7 @@ public class DoubleSpecimenAuto extends LinearOpMode {
                         new SequentialAction(
 //                                outtake.getWrist().setPosition(4),
                                 new Timeout(
-                                        outtake.ensureSpecimenPlaced(), 1.5
+                                        outtake.ensureSpecimenPlaced(), 2.5
                                 ),
                                 outtake.returnSpecimen()
                         )
