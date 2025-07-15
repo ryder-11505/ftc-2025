@@ -80,13 +80,13 @@ class Outtake(hardwareMap: HardwareMap) : StateLoggable {
             var specimenDeposit = 0.84
 
             @JvmField
-            var specimenOtherSide = 0.5
+            var specimenOtherSide = 0.45
 
             @JvmField
             var specimenSecure = 1.0
 
             @JvmField
-            var specimenSecureBack = 0.7
+            var specimenSecureBack = 0.5
         }
 
         val liftPositions = LiftPositions()

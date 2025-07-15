@@ -176,6 +176,7 @@ public class SmallAuto extends LinearOpMode {
         builder = builder.strafeTo(map.getSpecimenPosition().position)
                 .stopAndAdd(
                         new SequentialAction(
+                                outtake.raiseSpecimen(true),
 //                                outtake.getWrist().setPosition(4),
                                 new Timeout(
                                         outtake.ensureSpecimenPlaced(), 2.5
